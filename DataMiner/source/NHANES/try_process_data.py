@@ -1,12 +1,20 @@
 import pandas
 
-def func(a , b):
-    return a + b
+data_file = pandas.read_csv('../../data/NHANES/2017/Alcohol Use.csv' , index_col = 0 , encoding = 'utf-8')
 
-data_file = pandas.read_csv('../../data/NHANES/2017/Alcohol Use.csv' , encoding='utf-8' , index_col='SEQN')
-result = pandas.DataFrame()
-result.join(data_file[['ALQ111']] , how = 'inner').join(data_file[['ALQ121' , 'ALQ130']] , how='inner')
+new_file = pandas.DataFrame(index = data_file.index)
 
-result['qwq'] = func(result['ALQ111'], result['ALQ121'])
 
-result.to_csv('test.csv')
+# 布尔值检查，1 = True，2 = False，None = None
+def bool_check(x:int):
+    if x is None:
+        return None
+    if x > 2:
+        return None
+    return x == 1
+
+new_file = new_file.join(data_file['ALQ111'] , how = 'inner')
+
+new_file['bool'] = data_file['ALQ111'].apply(bool_check)
+
+print(new_file)
