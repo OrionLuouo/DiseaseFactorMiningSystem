@@ -5,6 +5,29 @@
     <title>Hello!</title>
 </head>
 <body>
-<h1>Hello!</h1>
+
+
+<table>
+    <thead></thead>
+    <tbody id="ques"></tbody>
+</table>
+
+
+
+
+
+<script>
+    fetch("/get_table")
+        .then(res => res.json())
+        .then(data => {
+            let list = data.rows;
+            let table = document.querySelector('#ques')
+            for (let i = 0; i < list.length; i++) {
+                let row = list[i];
+                table.innerHTML += '<tr><td>' + row + '</td><input></tr>';
+            }
+        })
+</script>
+
 </body>
 </html>
