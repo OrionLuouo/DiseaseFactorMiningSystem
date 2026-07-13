@@ -1,6 +1,7 @@
 from flask import Flask,request,jsonify
 from msgpack import fallback
 
+from config import HOST,PORT,DEBUG
 from business import check_data, do_prediction
 
 #请确保安装了flask_cors(如果需要)和flask
@@ -60,4 +61,4 @@ def test():
         return jsonify({"status": "error", "message": err})
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=5000, debug=True)
+    app.run(host=HOST, port=PORT, debug=DEBUG)
