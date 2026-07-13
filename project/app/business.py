@@ -1,14 +1,17 @@
-
+from config import FEATURE_COLS,DEFAULT_VALUES
 
 def check_data(data):      #校验数据函数
     if not data:
-        return False,'未收到数据'
+        return False,'未收到数据,我怎么为你预测？至少把基础信息填了吧？'
 
-    required_fields = ['age','gender','systolic_bp','diastolic_bp','fasting_glucose']
+    required_fields = ['age','height','weight','gender',
+                       'systolic_bp','diastolic_bp',
+                       'heart_rate']    #   必填数据
+
     for field in required_fields:
         if field not in data or data.get(field) is None:
             return False,'缺少必要字段:'+field
-        # 年龄范围检查
+    # 年龄范围检查
     age = data.get('age')
     if not isinstance(age, (int, float)) or age < 0 or age > 150:
         return False, "年龄必须在0-150之间"
@@ -18,22 +21,49 @@ def check_data(data):      #校验数据函数
     if gender not in [0, 1]:
         return False, "性别必须为0（女）或1（男）"
 
+    # 身高检查
+    height = data.get('height')
+    if not isinstance(height, (int, float)) or height < 0:
+        return False, "身高必须为正数"
+
+    # 体重检查
+    weight = data.get('weight')
+    if not isinstance(weight, (int, float)) or weight < 0:
+        return False, "体重必须为正数"
+
     # 收缩压范围检查
     sbp = data.get('systolic_bp')
-    if sbp < 50 or sbp > 300:
+    if not isinstance(sbp, (int, float)) or sbp < 50 or sbp > 300:
         return False, "收缩压范围应在50-300之间"
 
     # 舒张压范围检查
     dbp = data.get('diastolic_bp')
-    if dbp < 30 or dbp > 200:
+    if not isinstance(dbp, (int, float)) or dbp < 30 or dbp > 200:
         return False, "舒张压范围应在30-200之间"
 
-    # 空腹血糖范围检查
-    glucose = data.get('fasting_glucose')
-    if glucose < 1.0 or glucose > 30.0:
-        return False, "空腹血糖范围应在1.0-30.0之间"
+    # 心率范围检查
+    heart_rate = data.get('heart_rate')
+    if not isinstance(heart_rate, (int, float)) or heart_rate < 30 or heart_rate > 200:
+        return False, "心率范围应在30-200之间"
 
+    optional_fields = {
+        'total_cholesterol': (1.0, 6.0, "总胆固醇范围应在1.0-6.0 mmol/L之间"),
+        'hdl_cholesterol': (0.4, 3.4, "HDL胆固醇范围应在0.4-3.4 mmol/L之间"),
+        'ldl_cholesterol': (0.4, 3.4, "LDL胆固醇范围应在0.4-3.4 mmol/L之间"),
+        'triglycerides': (0.1, 8.0, "甘油三酯范围应在0.1-8.0 mmol/L之间"),
+        'alt': (1, 200, "ALT范围应在1.0-200 U/L之间"),
+        'ast': (1, 200, "AST范围应在1.0-200 U/L之间"),
+        'creatinine': (44, 133, "肌酐范围应在44-133 μmol/L之间"),
+        'urea': (2.0, 25.0, "尿素范围应在2.0-25.0 mmol/L之间"),
+    }       #非必填数据及对应检测范围
+
+    for field, (min_val, max_val, err_msg) in optional_fields.items():
+        if field in data and data.get(field) is not None:
+            val = data.get(field)
+            if val < min_val or val > max_val:
+                return False, err_msg
     return True,'数据校验通过'
+
 
 def do_prediction(data):
     """根据用户数据生成预测结果（模拟版）"""
