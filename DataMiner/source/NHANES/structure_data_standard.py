@@ -8,7 +8,7 @@ from get_data import DATA_PATH , DATA_NAMES , SHEET_MAP
 from source.NHANES.process_data import TARGET_PATH
 
 # 默认的缺失容许率
-DEFAULT_MISSING_TOLERANCE = 0.4
+DEFAULT_MISSING_TOLERANCE = 0.5
 
 DATA_MAP = {
     'SEQN':{'type': 'int' , 'tolerance': 1.1},
@@ -114,11 +114,6 @@ def clean_data():
     for column in DROP_LIST:
         if column in data_file.columns:
             data_file.drop(column, axis=1, inplace=True)
-    target_path = TARGET_PATH[:-1] + '_cleaned.csv'
-    if os.path.exists(target_path):
-        os.remove(target_path)
-    data_file.to_csv(target_path , index=False , encoding='utf-8')
-    print('> 数据清洗结果已存入文件 "' , str.split(target_path , '/')[-1] , sep = '')
 
 # 计算标准值
 def calculate_standards():
@@ -184,6 +179,16 @@ def calculate_standards():
     with open(target_path , 'w' , encoding = 'utf-8') as target_file:
         json.dump(DATA_MAP , target_file , ensure_ascii = False , indent = 4)
     print('> 数据标准已写入 "' , str.split(target_path , '/')[-1] , sep = '')
+    for column in data_file.columns:
+        data_file[column] = data_file[column].fillna(DATA_MAP[column]['default'])
+    float_columns = data_file.select_dtypes(include=['float']).columns
+    for column in float_columns:
+        data_file[column] = data_file[column].round(4)
+    target_path = TARGET_PATH[:-1] + '_cleaned.csv'
+    if os.path.exists(target_path):
+        os.remove(target_path)
+    data_file.to_csv(target_path , index=False , encoding='utf-8')
+    print('> 数据清洗结果已存入文件 "' , str.split(target_path , '/')[-1] , sep = '')
 
 clean_data()
 calculate_standards()
