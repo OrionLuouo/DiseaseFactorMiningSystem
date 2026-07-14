@@ -129,6 +129,10 @@ def get_data(tr: Tag , name: str):
             data_file.to_csv(path , index = False , encoding = 'utf-8')
             print(' > Data sheet "' , name , '" has been downloaded to ' , path , '.' , sep = '')
 
-if __name__ == '__main__':
+def run():
+    print("> Getting data...")
     os.makedirs(DATA_PATH , exist_ok = True)
     search_survey()
+
+if __name__ == '__main__':
+    run()

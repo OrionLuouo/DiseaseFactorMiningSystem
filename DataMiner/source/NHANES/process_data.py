@@ -3,7 +3,7 @@ import os.path
 import math
 import pandas
 
-from get_data import DATA_PATH , DATA_NAMES , SHEET_MAP
+from get_data import DATA_PATH
 
 TARGET_PATH = DATA_PATH[:-1] + '.csv'
 
@@ -265,8 +265,12 @@ def process() -> pandas.DataFrame:
                     result[process[0]] = columns.apply(lambda row: process[3](*row) , axis = 1)
     return result
 
-if __name__ == '__main__':
+def run():
+    print('> Processing data...')
     result = process()
     if os.path.exists(TARGET_PATH):
         os.remove(TARGET_PATH)
     result.to_csv(TARGET_PATH , encoding = 'utf-8')
+
+if __name__ == '__main__':
+    run()

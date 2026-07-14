@@ -3,9 +3,10 @@ import os
 
 import math
 import pandas
+from pandas.core.interchange.dataframe_protocol import DataFrame
 
-from get_data import DATA_PATH , DATA_NAMES , SHEET_MAP
-from process_data import TARGET_PATH , INTAKE_MAP
+from get_data import DATA_PATH
+from process_data import INTAKE_MAP
 
 # 默认的缺失容许率
 DEFAULT_MISSING_TOLERANCE = 0.5
@@ -243,7 +244,7 @@ CATEGORY_MAP = [
 
 DROP_LIST = ['SEQN']
 
-data_file = pandas.read_csv(DATA_PATH[:-1] + '.csv' , encoding = 'utf-8' , index_col = 'SEQN')
+data_file: DataFrame = None
 
 # 读取表，列出字典格式。
 def get_column_list():
@@ -373,7 +374,13 @@ def categorize():
         json.dump(CATEGORY_MAP , target_file , ensure_ascii = False , indent = 4)
     print('> 数据分类标准已写入文件 "' , str.split(target_path , '/')[-1] , sep = '')
 
-if __name__ == '__main__':
+def run():
+    print('> Standardizing data...')
+    global data_file
+    data_file = pandas.read_csv(DATA_PATH[:-1] + '.csv', encoding='utf-8', index_col='SEQN')
     clean_data()
     calculate_standards()
     categorize()
+
+if __name__ == '__main__':
+    run()
