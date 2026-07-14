@@ -3,6 +3,46 @@
 
 # 特征顺序（和模型开发人员商定的）
 FEATURE_COLS_and_Default_VALUES={
+    "性别": {
+        "type": "str",
+        "necessary": True,
+        "default": ""
+    },
+    "体重（kg）": {
+        "type": "float",
+        "necessary": True,
+        "default": 69.05101811367915,
+        "value": 69.05101811367915,
+        "min":0
+    },
+    "身高（cm）": {
+        "type": "float",
+        "necessary": True,
+        "default": 156.5863710181135,
+        "value": 156.5863710181135,
+        "min":0
+    },
+    "BMI（kg/m^2）": {
+        "type": "float",
+        "default":None,
+        "value": 26.577501561524095
+    },
+    "是否从事体力劳动": {
+        "type": "bool",
+        "default": False,
+        "value": 0.16402248594628357
+    },
+
+    "疾病史":{
+        "type": "str",
+        "default": ""
+    },
+    "存在家族糖尿病史": {
+        "type": "bool",
+        "default": False,
+        "value": 0.11230480949406621
+    },
+
     "饮酒频率": {
         "type": "int",
         "default": 1,
@@ -10,6 +50,94 @@ FEATURE_COLS_and_Default_VALUES={
         "min":0,
         "max":4
     },
+    "饮食是否充足": {
+        "type": "int",
+        "default": 3,
+        "value": 2.528669581511555,
+        "min":1,
+        "max":3
+    },
+    "饮食是否均衡": {
+        "type": "bool",
+        "default": True,
+        "value": 0.895315427857589
+    },
+    "起夜次数": {
+        "type": "int",
+        "default": 1,
+        "value": 0.7179262960649594,
+        "min":0
+    },
+    "是否每周进行进行中等以上强度锻炼": {
+        "type": "bool",
+        "default": False,
+        "value": 0.3207995003123048
+    },
+    "平均每天坐姿时长（分钟）": {
+        "type": "int",
+        "default": 260,
+        "value": 260.4493441599001,
+        "min":0
+    },
+    "工作日平均睡眠小时数": {
+        "type": "float",
+        "default": 5.423110555902561,
+        "value": 5.423110555902561,
+        "min":0,
+        "max":24
+    },
+    "打鼾频率": {
+        "type": "int",
+        "default": 1,
+        "value": 0.9651467832604622,
+        "min":0,
+        "max":3
+    },
+
+    "每日食盐摄入程度": {
+        "type": "int",
+        "default": 3,
+        "value": 2.672204871955028,
+        "min": 1,
+        "max": 4
+    },
+    "每日热量摄入量（kcal）": {
+        "type": "int",
+        "default": 1789,
+        "value": 1789.0705808869457,
+        "min": 0
+    },
+    "每日蛋白质摄入量（g）": {
+        "type": "float",
+        "default": 65.75476826983142,
+        "value": 65.75476826983142,
+        "min": 0
+    },
+    "每日碳水摄入量（g）": {
+        "type": "float",
+        "default": 216.29321673953842,
+        "value": 216.29321673953842,
+        "min": 0
+    },
+    "每日膳食纤维摄入量（g）": {
+        "type": "float",
+        "default": 13.910256089943745,
+        "value": 13.910256089943745,
+        "min": 0
+    },
+    "每日脂肪摄入量（g）": {
+        "type": "float",
+        "default": 71.75708682073683,
+        "value": 71.75708682073683,
+        "min": 0
+    },
+    "每日水摄入量（g）": {
+        "type": "int",
+        "default": 910,
+        "value": 909.5124197376655,
+        "min": 0
+    },
+
     "血压收缩压（mmHg）": {
         "type": "float",
         "default": 90.54874037060172,
@@ -36,160 +164,13 @@ FEATURE_COLS_and_Default_VALUES={
         "default": True,
         "value": 0.9255465334166146
     },
-    "体重（kg）": {
-        "type": "float",
-        "necessary": True,
-        "default": 69.05101811367915,
-        "value": 69.05101811367915,
-        "min":0
-    },
-    "身高（cm）": {
-        "type": "float",
-        "necessary": True,
-        "default": 156.5863710181135,
-        "value": 156.5863710181135,
-        "min":0
-    },
-    "BMI（kg/m^2）": {
-        "type": "float",
-        "default":None,
-        "value": 26.577501561524095
-    },
+
     "胆固醇（mg/dL）": {
         "type": "int",
         "default": 149,
         "value": 149.31442848219862,
         "min":50,
         "max":600
-    },
-    "白细胞计数（1000个细胞/uL）": {
-        "type": "float",
-        "default": 6.687870081199261,
-        "value": 6.687870081199261,
-        "min":1,
-        "max":500
-    },
-    "红细胞计数（10^6个细胞/µL）": {
-        "type": "float",
-        "default": 4.310713304184881,
-        "value": 4.310713304184881,
-        "min":2,
-        "max":7
-    },
-    "血红蛋白（g/dL）": {
-        "type": "float",
-        "default": 12.523897564022512,
-        "value": 12.523897564022512,
-        "min":5,
-        "max":20
-    },
-    "血小板计数（1000 个细胞/µL）": {
-        "type": "int",
-        "default": 234,
-        "value": 234.35427857589008,
-        "min":10,
-        "max":2000
-    },
-    "性别": {
-        "type": "str",
-        "necessary": True,
-        "default": ""
-    },
-    "存在家族糖尿病史": {
-        "type": "bool",
-        "default": False,
-        "value": 0.11230480949406621
-    },
-    "每日食盐摄入程度": {
-        "type": "int",
-        "default": 3,
-        "value": 2.672204871955028,
-        "min":1,
-        "max":4
-    },
-    "每日热量摄入量（kcal）": {
-        "type": "int",
-        "default": 1789,
-        "value": 1789.0705808869457,
-        "min":0
-    },
-    "每日蛋白质摄入量（g）": {
-        "type": "float",
-        "default": 65.75476826983142,
-        "value": 65.75476826983142,
-        "min":0
-    },
-    "每日碳水摄入量（g）": {
-        "type": "float",
-        "default": 216.29321673953842,
-        "value": 216.29321673953842,
-        "min":0
-    },
-    "每日膳食纤维摄入量（g）": {
-        "type": "float",
-        "default": 13.910256089943745,
-        "value": 13.910256089943745,
-        "min":0
-    },
-    "每日脂肪摄入量（g）": {
-        "type": "float",
-        "default": 71.75708682073683,
-        "value": 71.75708682073683,
-        "min":0
-    },
-    "每日水摄入量（g）": {
-        "type": "int",
-        "default": 910,
-        "value": 909.5124197376655,
-        "min":0
-    },
-    "饮食是否充足": {
-        "type": "int",
-        "default": 3,
-        "value": 2.528669581511555,
-        "min":1,
-        "max":3
-    },
-    "饮食是否均衡": {
-        "type": "bool",
-        "default": True,
-        "value": 0.895315427857589
-    },
-    "起夜次数": {
-        "type": "int",
-        "default": 1,
-        "value": 0.7179262960649594,
-        "min":0
-    },
-    "是否从事体力劳动": {
-        "type": "bool",
-        "default": False,
-        "value": 0.16402248594628357
-    },
-    "是否每周进行进行中等以上强度锻炼": {
-        "type": "bool",
-        "default": False,
-        "value": 0.3207995003123048
-    },
-    "平均每天坐姿时长（分钟）": {
-        "type": "int",
-        "default": 260,
-        "value": 260.4493441599001,
-        "min":0
-    },
-    "工作日平均睡眠小时数": {
-        "type": "float",
-        "default": 5.423110555902561,
-        "value": 5.423110555902561,
-        "min":0,
-        "max":24
-    },
-    "打鼾频率": {
-        "type": "int",
-        "default": 1,
-        "value": 0.9651467832604622,
-        "min":0,
-        "max":3
     },
     "葡萄糖（mg/dL）": {
         "type": "int",
@@ -260,6 +241,35 @@ FEATURE_COLS_and_Default_VALUES={
         "value": 2.2398251093066834,
         "min":0.5,
         "max":7
+    },
+
+    "白细胞计数（1000个细胞/uL）": {
+        "type": "float",
+        "default": 6.687870081199261,
+        "value": 6.687870081199261,
+        "min":1,
+        "max":500
+    },
+    "红细胞计数（10^6个细胞/µL）": {
+        "type": "float",
+        "default": 4.310713304184881,
+        "value": 4.310713304184881,
+        "min":2,
+        "max":7
+    },
+    "血红蛋白（g/dL）": {
+        "type": "float",
+        "default": 12.523897564022512,
+        "value": 12.523897564022512,
+        "min":5,
+        "max":20
+    },
+    "血小板计数（1000 个细胞/µL）": {
+        "type": "int",
+        "default": 234,
+        "value": 234.35427857589008,
+        "min":10,
+        "max":2000
     }
 }
 
