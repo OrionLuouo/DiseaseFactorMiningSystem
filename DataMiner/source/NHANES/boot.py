@@ -1,5 +1,3 @@
-import os
-
 import get_data
 import process_data
 import standardize_data

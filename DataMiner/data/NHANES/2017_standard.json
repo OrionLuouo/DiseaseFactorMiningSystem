@@ -1,7 +1,4 @@
 {
-    "SEQN": {
-        "type": "int"
-    },
     "患病情况": {
         "type": "str",
         "default": "",
@@ -49,18 +46,6 @@
         "necessary": true,
         "default": 26.577501561524095,
         "value": 26.577501561524095
-    },
-    "是否有过胸部疼痛": {
-        "type": "bool"
-    },
-    "是否在运动时胸痛": {
-        "type": "bool"
-    },
-    "疼痛能否在10分钟内缓解": {
-        "type": "bool"
-    },
-    "运动时是否气短": {
-        "type": "bool"
     },
     "胆固醇（mg/dL）": {
         "type": "int",
@@ -132,12 +117,6 @@
         "default": 910,
         "value": 909.5124197376655
     },
-    "骨密度（g/cm²）": {
-        "type": "float"
-    },
-    "体脂率（%）": {
-        "type": "float"
-    },
     "饮食是否充足": {
         "type": "int",
         "default": 3,
@@ -148,52 +127,10 @@
         "default": true,
         "value": 0.895315427857589
     },
-    "是否会跳过正餐": {
-        "type": "bool"
-    },
-    "胰岛素（pmol/L）": {
-        "type": "float"
-    },
     "起夜次数": {
         "type": "int",
         "default": 1,
         "value": 0.7179262960649594
-    },
-    "尿检·钡（µg/L）": {
-        "type": "float"
-    },
-    "尿检·镉（µg/L）": {
-        "type": "float"
-    },
-    "尿检·钴（µg/L）": {
-        "type": "float"
-    },
-    "尿检·铯（µg/L）": {
-        "type": "float"
-    },
-    "尿检·锰（µg/L）": {
-        "type": "float"
-    },
-    "尿检·钼（µg/L）": {
-        "type": "float"
-    },
-    "尿检·铅（µg/L）": {
-        "type": "float"
-    },
-    "尿检·锑（µg/L）": {
-        "type": "float"
-    },
-    "尿检·锡（µg/L）": {
-        "type": "float"
-    },
-    "尿检·铊（µg/L）": {
-        "type": "float"
-    },
-    "尿检·钨（µg/L）": {
-        "type": "float"
-    },
-    "父母是否患有骨质疏松": {
-        "type": "bool"
     },
     "是否从事体力劳动": {
         "type": "bool",
@@ -204,9 +141,6 @@
         "type": "bool",
         "default": false,
         "value": 0.3207995003123048
-    },
-    "平均每天中等以上强度锻炼时长（分钟）": {
-        "type": "int"
     },
     "平均每天坐姿时长（分钟）": {
         "type": "int",
@@ -222,18 +156,6 @@
         "type": "int",
         "default": 1,
         "value": 0.9651467832604622
-    },
-    "吸烟频率": {
-        "type": "int"
-    },
-    "开始吸烟年龄": {
-        "type": "int"
-    },
-    "家中是否有人吸烟": {
-        "type": "bool"
-    },
-    "一周内是否吸入过二手烟": {
-        "type": "bool"
     },
     "葡萄糖（mg/dL）": {
         "type": "int",

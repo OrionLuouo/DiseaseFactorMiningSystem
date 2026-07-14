@@ -253,6 +253,7 @@ def get_column_list():
 
 # 按照缺失处理规则清洗数据
 def clean_data():
+    drop_list = []
     for column in DATA_MAP:
         if column not in data_file.columns:
             continue
@@ -263,6 +264,7 @@ def clean_data():
         if missing_ratio > missing_tolerance:
             print('> 字段 "' , column , '" 缺失率 ' , missing_ratio , ' 超过缺失容许 ' , missing_tolerance , sep = '')
             data_file.drop(column , axis=1 , inplace=True)
+            drop_list.append(column)
             continue
         if 'necessary' in DATA_MAP[column] and DATA_MAP[column]['necessary'] == True:
             if 'function' in DATA_MAP[column]:
@@ -273,6 +275,9 @@ def clean_data():
             else:
                 data_file.dropna(subset = [column] , inplace = True)
     data_file.reset_index(drop = True , inplace = True)
+    DATA_MAP.pop('SEQN')
+    for drop_column in drop_list:
+        DATA_MAP.pop(drop_column)
     for column in DROP_LIST:
         if column in data_file.columns:
             data_file.drop(column, axis=1, inplace=True)
@@ -288,8 +293,6 @@ def calculate_standards():
             # 删除 tolerance 字段
             DATA_MAP[column].pop('tolerance')
         if column not in data_file.columns:
-            continue
-        if column == 'SEQN':
             continue
         elif column == '患病情况':
             disease_map = {}
