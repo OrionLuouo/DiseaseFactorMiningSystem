@@ -233,9 +233,7 @@
         "type": "bool"
     },
     "一周内是否吸入过二手烟": {
-        "type": "bool",
-        "default": false,
-        "value": 0.2268582136164897
+        "type": "bool"
     },
     "葡萄糖（mg/dL）": {
         "type": "int",
