@@ -339,17 +339,17 @@ def calculate_standards():
     target_path = DATA_PATH[:-1] + '_standard.json'
     with open(target_path , 'w' , encoding = 'utf-8') as target_file:
         json.dump(DATA_MAP , target_file , ensure_ascii = False , indent = 4)
-    print('> 数据标准已写入 "' , str.split(target_path , '/')[-1] , sep = '')
+    print('> 数据标准已写入文件 "' , str.split(target_path , '/')[-1] , sep = '')
     for column in data_file.columns:
         data_file[column] = data_file[column].fillna(DATA_MAP[column]['default'])
     float_columns = data_file.select_dtypes(include=['float']).columns
     for column in float_columns:
         data_file[column] = data_file[column].round(4)
-    target_path = TARGET_PATH[:-1] + '_cleaned.csv'
+    target_path = DATA_PATH[:-1] + '_cleaned.csv'
     if os.path.exists(target_path):
         os.remove(target_path)
     data_file.to_csv(target_path , index=False , encoding='utf-8')
-    print('> 数据清洗结果已存入文件 "' , str.split(target_path , '/')[-1] , sep = '')
+    print('> 数据清洗结果已写入文件 "' , str.split(target_path , '/')[-1] , sep = '')
 
 # 格式化分类表
 def categorize():
@@ -368,9 +368,10 @@ def categorize():
                 data['necessary'] = DATA_MAP[name]['necessary']
             if name in information_map:
                 data['information'] = information_map[name]
-    target_path = TARGET_PATH[:-1] + '_category.json'
+    target_path = DATA_PATH[:-1] + '_category.json'
     with open(target_path , 'w' , encoding = 'utf-8') as target_file:
         json.dump(CATEGORY_MAP , target_file , ensure_ascii = False , indent = 4)
+    print('> 数据分类标准已写入文件 "' , str.split(target_path , '/')[-1] , sep = '')
 
 if __name__ == '__main__':
     clean_data()
