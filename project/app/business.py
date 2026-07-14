@@ -1,68 +1,198 @@
-from config import FEATURE_COLS,DEFAULT_VALUES
+from project.config import FEATURE_COLS,DEFAULT_VALUES
 
-def check_data(data):      #校验数据函数
+def convert_and_validate(data):
+    """
+    转换并校验前端数据
+    输入：原始JSON数据（dict）
+    输出：(是否成功, 转换后的数据dict 或 错误信息)
+    """
     if not data:
-        return False,'未收到数据,我怎么为你预测？至少把基础信息填了吧？'
+        return False, None, "未收到数据"
+    #=================数据格式转换=================#
+    try:
+        age = float(data.get('age', 0))
+    except (TypeError, ValueError):
+        return False, None, "❌ 年龄（age）格式错误，请输入数字"
 
-    required_fields = ['age','height','weight','gender',
-                       'systolic_bp','diastolic_bp',
-                       'heart_rate']    #   必填数据
+    try:
+        gender = int(data.get('gender', 0))
+    except (TypeError, ValueError):
+        return False, None, "❌ 性别（gender）格式错误，请输入 0（女）或 1（男）"
 
-    for field in required_fields:
-        if field not in data or data.get(field) is None:
-            return False,'缺少必要字段:'+field
-    # 年龄范围检查
-    age = data.get('age')
-    if not isinstance(age, (int, float)) or age < 0 or age > 150:
-        return False, "年龄必须在0-150之间"
+    try:
+        systolic_bp = float(data.get('systolic_bp', 0))
+    except (TypeError, ValueError):
+        return False, None, "❌ 收缩压（systolic_bp）格式错误，请输入数字"
 
-    # 性别检查
-    gender = data.get('gender')
+    try:
+        diastolic_bp = float(data.get('diastolic_bp', 0))
+    except (TypeError, ValueError):
+        return False, None, "❌ 舒张压（diastolic_bp）格式错误，请输入数字"
+
+    try:
+        fasting_glucose = float(data.get('fasting_glucose', 0))
+    except (TypeError, ValueError):
+        return False, None, "❌ 空腹血糖（fasting_glucose）格式错误，请输入数字"
+
+    # 非必填字段，如果没有则取默认值
+    try:
+        height = float(data.get('height')) if data.get('height') is not None else 165.0
+    except (TypeError, ValueError):
+        return False, None, "❌ 身高（height）格式错误，请输入数字"
+
+    try:
+        weight = float(data.get('weight')) if data.get('weight') is not None else 65.0
+    except (TypeError, ValueError):
+        return False, None, "❌ 体重（weight）格式错误，请输入数字"
+
+    try:
+        heart_rate = float(data.get('heart_rate')) if data.get('heart_rate') is not None else 75.0
+    except (TypeError, ValueError):
+        return False, None, "❌ 心率（heart_rate）格式错误，请输入数字"
+
+    try:
+        total_cholesterol = float(data.get('total_cholesterol')) if data.get(
+            'total_cholesterol') is not None else 4.5
+    except (TypeError, ValueError):
+        return False, None, "❌ 总胆固醇（total_cholesterol）格式错误，请输入数字"
+
+    try:
+        hdl_cholesterol = float(data.get('hdl_cholesterol')) if data.get('hdl_cholesterol') is not None else 1.3
+    except (TypeError, ValueError):
+        return False, None, "❌ HDL胆固醇（hdl_cholesterol）格式错误，请输入数字"
+
+    try:
+        ldl_cholesterol = float(data.get('ldl_cholesterol')) if data.get('ldl_cholesterol') is not None else 2.8
+    except (TypeError, ValueError):
+        return False, None, "❌ LDL胆固醇（ldl_cholesterol）格式错误，请输入数字"
+
+    try:
+        triglycerides = float(data.get('triglycerides')) if data.get('triglycerides') is not None else 1.5
+    except (TypeError, ValueError):
+        return False, None, "❌ 甘油三酯（triglycerides）格式错误，请输入数字"
+
+    try:
+        alt = float(data.get('alt')) if data.get('alt') is not None else 25.0
+    except (TypeError, ValueError):
+        return False, None, "❌ ALT（alt）格式错误，请输入数字"
+
+    try:
+        ast = float(data.get('ast')) if data.get('ast') is not None else 22.0
+    except (TypeError, ValueError):
+        return False, None, "❌ AST（ast）格式错误，请输入数字"
+
+    try:
+        creatinine = float(data.get('creatinine')) if data.get('creatinine') is not None else 80.0
+    except (TypeError, ValueError):
+        return False, None, "❌ 肌酐（creatinine）格式错误，请输入数字"
+
+    try:
+        urea = float(data.get('urea')) if data.get('urea') is not None else 5.5
+    except (TypeError, ValueError):
+        return False, None, "❌ 尿素（urea）格式错误，请输入数字"
+
+    #=================数据校验=================#
+    ###必填字段：
+    if age < 0 or age > 150:
+        return False, None, "年龄必须在 0-150 之间"
+
     if gender not in [0, 1]:
-        return False, "性别必须为0（女）或1（男）"
+        return False, None, "性别必须为 0（女）或 1（男）"
 
-    # 身高检查
-    height = data.get('height')
-    if not isinstance(height, (int, float)) or height < 0:
-        return False, "身高必须为正数"
+    if systolic_bp < 50 or systolic_bp > 300:
+        return False, None, "收缩压范围应在 50-300 mmHg 之间"
 
-    # 体重检查
-    weight = data.get('weight')
-    if not isinstance(weight, (int, float)) or weight < 0:
-        return False, "体重必须为正数"
+    if diastolic_bp < 30 or diastolic_bp > 200:
+        return False, None, "舒张压范围应在 30-200 mmHg 之间"
 
-    # 收缩压范围检查
-    sbp = data.get('systolic_bp')
-    if not isinstance(sbp, (int, float)) or sbp < 50 or sbp > 300:
-        return False, "收缩压范围应在50-300之间"
+    if fasting_glucose < 1.0 or fasting_glucose > 30.0:
+        return False, None, "空腹血糖范围应在 1.0-30.0 mmol/L 之间"
 
-    # 舒张压范围检查
-    dbp = data.get('diastolic_bp')
-    if not isinstance(dbp, (int, float)) or dbp < 30 or dbp > 200:
-        return False, "舒张压范围应在30-200之间"
 
-    # 心率范围检查
-    heart_rate = data.get('heart_rate')
-    if not isinstance(heart_rate, (int, float)) or heart_rate < 30 or heart_rate > 200:
-        return False, "心率范围应在30-200之间"
+    ###非必填字段：#如果字段存在且不为空则进行校验
+    if 'height' in data and data['height'] is not None:
+        if height < 50 or height > 300:
+            return False, None, "身高范围应在 50-300 cm 之间"
 
-    optional_fields = {
-        'total_cholesterol': (1.0, 6.0, "总胆固醇范围应在1.0-6.0 mmol/L之间"),
-        'hdl_cholesterol': (0.4, 3.4, "HDL胆固醇范围应在0.4-3.4 mmol/L之间"),
-        'ldl_cholesterol': (0.4, 3.4, "LDL胆固醇范围应在0.4-3.4 mmol/L之间"),
-        'triglycerides': (0.1, 8.0, "甘油三酯范围应在0.1-8.0 mmol/L之间"),
-        'alt': (1, 200, "ALT范围应在1.0-200 U/L之间"),
-        'ast': (1, 200, "AST范围应在1.0-200 U/L之间"),
-        'creatinine': (44, 133, "肌酐范围应在44-133 μmol/L之间"),
-        'urea': (2.0, 25.0, "尿素范围应在2.0-25.0 mmol/L之间"),
-    }       #非必填数据及对应检测范围
+    if 'weight' in data and data['weight'] is not None:
+        if weight < 10 or weight > 500:
+            return False, None, "体重范围应在 10-500 kg 之间"
 
-    for field, (min_val, max_val, err_msg) in optional_fields.items():
-        if field in data and data.get(field) is not None:
-            val = data.get(field)
-            if val < min_val or val > max_val:
-                return False, err_msg
-    return True,'数据校验通过'
+    if 'heart_rate' in data and data['heart_rate'] is not None:
+        if heart_rate < 20 or heart_rate > 250:
+            return False, None, "心率范围应在 20-250 次/分之间"
+
+    if 'total_cholesterol' in data and data['total_cholesterol'] is not None:
+        if total_cholesterol < 0.5 or total_cholesterol > 20.0:
+            return False, None, "总胆固醇范围应在 0.5-20.0 mmol/L 之间"
+
+    if 'hdl_cholesterol' in data and data['hdl_cholesterol'] is not None:
+        if hdl_cholesterol < 0.1 or hdl_cholesterol > 5.0:
+            return False, None, "HDL胆固醇范围应在 0.1-5.0 mmol/L 之间"
+
+    if 'ldl_cholesterol' in data and data['ldl_cholesterol'] is not None:
+        if ldl_cholesterol < 0.1 or ldl_cholesterol > 10.0:
+            return False, None, "LDL胆固醇范围应在 0.1-10.0 mmol/L 之间"
+
+    if 'triglycerides' in data and data['triglycerides'] is not None:
+        if triglycerides < 0.1 or triglycerides > 20.0:
+            return False, None, "甘油三酯范围应在 0.1-20.0 mmol/L 之间"
+
+    if 'alt' in data and data['alt'] is not None:
+        if alt < 1 or alt > 500:
+            return False, None, "ALT范围应在 1-500 U/L 之间"
+
+    if 'ast' in data and data['ast'] is not None:
+        if ast < 1 or ast > 500:
+            return False, None, "AST范围应在 1-500 U/L 之间"
+
+    if 'creatinine' in data and data['creatinine'] is not None:
+        if creatinine < 10 or creatinine > 2000:
+            return False, None, "肌酐范围应在 10-2000 μmol/L 之间"
+
+    if 'urea' in data and data['urea'] is not None:
+        if urea < 0.5 or urea > 50.0:
+            return False, None, "尿素范围应在 0.5-50.0 mmol/L 之间"
+
+    converted = {
+        'age': age,
+        'gender': gender,
+        'height': height,
+        'weight': weight,
+        'systolic_bp': systolic_bp,
+        'diastolic_bp': diastolic_bp,
+        'heart_rate': heart_rate,
+        'fasting_glucose': fasting_glucose,
+        'total_cholesterol': total_cholesterol,
+        'hdl_cholesterol': hdl_cholesterol,
+        'ldl_cholesterol': ldl_cholesterol,
+        'triglycerides': triglycerides,
+        'alt': alt,
+        'ast': ast,
+        'creatinine': creatinine,
+        'urea': urea,
+        'symptom_headache': int(bool(data.get('symptom_headache', 0))),
+        'symptom_dizziness': int(bool(data.get('symptom_dizziness', 0))),
+        'symptom_chest_pain': int(bool(data.get('symptom_chest_pain', 0))),
+        'symptom_palpitations': int(bool(data.get('symptom_palpitations', 0))),
+        'symptom_shortness_breath': int(bool(data.get('symptom_shortness_breath', 0))),
+        'symptom_fatigue': int(bool(data.get('symptom_fatigue', 0))),
+    }       #转换并校验后的数据
+
+    return True, converted, None
+
+
+def build_feature_vector(data):
+    features = []
+    for col in FEATURE_COLS:  # ← 使用config中定义的顺序
+        if col == 'bmi':
+            height = data.get('height', DEFAULT_VALUES.get('height', 165))
+            weight = data.get('weight', DEFAULT_VALUES.get('weight', 65))
+            value = weight / ((height / 100) ** 2)
+        else:
+            value = data.get(col, DEFAULT_VALUES.get(col, 0))
+        features.append(float(value))
+    return [features]
 
 
 def do_prediction(data):

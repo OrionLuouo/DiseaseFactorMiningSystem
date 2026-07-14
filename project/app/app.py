@@ -1,8 +1,7 @@
 from flask import Flask,request,jsonify
-from msgpack import fallback
 
-from config import HOST,PORT,DEBUG
-from business import check_data, do_prediction
+from project.config import HOST,PORT,DEBUG
+from business import convert_and_validate, do_prediction
 
 #请确保安装了flask_cors(如果需要)和flask
 
@@ -20,11 +19,11 @@ CORS(app)          #如果需要跨域支持，请取消注释
 def predict():      #接收前端数据并返回预测结果
     data = request.get_json()   #获取数据
 
-    is_valid,err_msg = check_data(data)    #校验数据
+    is_valid,converted_data,err_msg = convert_and_validate(data)    #校验数据
     if not is_valid:
         return jsonify({'status':'error','message':err_msg}),400    #返回错误信息
 
-    result = do_prediction(data)    #进行预测(第一部分)
+    result = do_prediction(converted_data)    #进行预测(第一部分)
     return jsonify({'status':'success','result':result}),200    #返回预测结果
 
 @app.route('/health', methods=['GET'])    #健康检查接口
@@ -53,7 +52,7 @@ def test():
         "fasting_glucose": 5.8
     }
     # 直接调用你的核心预测函数
-    is_valid, err = check_data(test_data)
+    is_valid, err = convert_and_validate(test_data)
     if is_valid:
         result = do_prediction(test_data)
         return jsonify({"status": "success", "result": result})
