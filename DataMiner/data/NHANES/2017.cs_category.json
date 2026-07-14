@@ -1,0 +1,251 @@
+[
+    {
+        "category": "基本信息",
+        "data_list": [
+            {
+                "data": "性别",
+                "type": "str",
+                "default": "",
+                "necessary": true
+            },
+            {
+                "data": "体重（kg）",
+                "type": "float",
+                "default": 69.05101811367915,
+                "necessary": true
+            },
+            {
+                "data": "身高（cm）",
+                "type": "float",
+                "default": 156.5863710181135,
+                "necessary": true
+            },
+            {
+                "data": "BMI（kg/m²）",
+                "type": "float",
+                "default": 26.577501561524095,
+                "necessary": true
+            },
+            {
+                "data": "是否从事体力劳动",
+                "type": "bool",
+                "default": false
+            }
+        ]
+    },
+    {
+        "category": "疾病史",
+        "data_list": [
+            {
+                "data": "患病情况",
+                "type": "str",
+                "default": ""
+            },
+            {
+                "data": "存在家族糖尿病史",
+                "type": "bool",
+                "default": false
+            }
+        ]
+    },
+    {
+        "category": "生活规律",
+        "data_list": [
+            {
+                "data": "饮酒频率",
+                "type": "int",
+                "default": 1,
+                "information": "0 表示从不喝酒，1 表示一年数次，2 表示每月数次，3 表示每周数次，4 表示基本每日。"
+            },
+            {
+                "data": "饮食是否充足",
+                "type": "int",
+                "default": 3,
+                "information": "1 表示经常不足，2 表示偶尔不足，3 表示饮食充足"
+            },
+            {
+                "data": "饮食是否均衡",
+                "type": "bool",
+                "default": true,
+                "information": "False 表示基本单调，True 表示基本均衡"
+            },
+            {
+                "data": "起夜次数",
+                "type": "int",
+                "default": 1
+            },
+            {
+                "data": "是否每周进行进行中等以上强度锻炼",
+                "type": "bool",
+                "default": false
+            },
+            {
+                "data": "平均每天坐姿时长（分钟）",
+                "type": "int",
+                "default": 260
+            },
+            {
+                "data": "工作日平均睡眠小时数",
+                "type": "float",
+                "default": 5.423110555902561
+            },
+            {
+                "data": "打鼾频率",
+                "type": "int",
+                "default": 1,
+                "information": "0=从不；1=很少（每周1-2晚）；2=偶尔（每周3-4晚）；3=频繁（每周5晚及以上）"
+            }
+        ]
+    },
+    {
+        "category": "饮食习惯",
+        "data_list": [
+            {
+                "data": "每日食盐摄入程度",
+                "type": "int",
+                "default": 3,
+                "information": " 从 1 ~ 4 表示程度轻重，1 表示从不添加盐，4 表示摄入很多盐。"
+            },
+            {
+                "data": "每日热量摄入量（kcal）",
+                "type": "int",
+                "default": 1789
+            },
+            {
+                "data": "每日蛋白质摄入量（g）",
+                "type": "float",
+                "default": 65.75476826983142
+            },
+            {
+                "data": "每日碳水摄入量（g）",
+                "type": "float",
+                "default": 216.29321673953842
+            },
+            {
+                "data": "每日膳食纤维摄入量（g）",
+                "type": "float",
+                "default": 13.910256089943745
+            },
+            {
+                "data": "每日脂肪摄入量（g）",
+                "type": "float",
+                "default": 71.75708682073683
+            },
+            {
+                "data": "每日水摄入量（g）",
+                "type": "int",
+                "default": 910
+            }
+        ]
+    },
+    {
+        "category": "体检数据",
+        "data_list": [
+            {
+                "data": "血压收缩压（mmHg）",
+                "type": "float",
+                "default": 90.54874037060172
+            },
+            {
+                "data": "血压舒张压（mmHg）",
+                "type": "float",
+                "default": 50.83764313970441
+            },
+            {
+                "data": "脉搏（次/分钟）",
+                "type": "int",
+                "default": 73
+            },
+            {
+                "data": "脉搏是否规律",
+                "type": "bool",
+                "default": true
+            }
+        ]
+    },
+    {
+        "category": "化验数据",
+        "data_list": [
+            {
+                "data": "胆固醇（mg/dL）",
+                "type": "int",
+                "default": 149
+            },
+            {
+                "data": "葡萄糖（mg/dL）",
+                "type": "int",
+                "default": 73
+            },
+            {
+                "data": "甘油三酯（mg/dL）",
+                "type": "int",
+                "default": 100
+            },
+            {
+                "data": "肌酐（mg/dL）",
+                "type": "float",
+                "default": 0.6347870081199272
+            },
+            {
+                "data": "磷（mg/dL）",
+                "type": "int",
+                "default": 113
+            },
+            {
+                "data": "钾（mmol/L）",
+                "type": "float",
+                "default": 2.969356652092434
+            },
+            {
+                "data": "白蛋白（g/dL）",
+                "type": "float",
+                "default": 2.9644097439100396
+            },
+            {
+                "data": "血尿素氮（mg/dL）",
+                "type": "int",
+                "default": 11
+            },
+            {
+                "data": "碳酸氢盐（mmol/L）",
+                "type": "int",
+                "default": 19
+            },
+            {
+                "data": "钠（mmol/L）",
+                "type": "int",
+                "default": 102
+            },
+            {
+                "data": "球蛋白（g/dL）",
+                "type": "float",
+                "default": 2.2398251093066834
+            }
+        ]
+    },
+    {
+        "category": "血检数据",
+        "data_list": [
+            {
+                "data": "白细胞计数（1000个细胞/uL）",
+                "type": "float",
+                "default": 6.687870081199261
+            },
+            {
+                "data": "红细胞计数（10⁶ 个细胞/µL）",
+                "type": "float",
+                "default": 4.310713304184881
+            },
+            {
+                "data": "血红蛋白（g/dL）",
+                "type": "float",
+                "default": 12.523897564022512
+            },
+            {
+                "data": "血小板计数（1000 个细胞/µL）",
+                "type": "int",
+                "default": 234
+            }
+        ]
+    }
+]

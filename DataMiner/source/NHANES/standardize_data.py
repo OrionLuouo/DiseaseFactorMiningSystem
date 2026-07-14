@@ -5,7 +5,7 @@ import math
 import pandas
 
 from get_data import DATA_PATH , DATA_NAMES , SHEET_MAP
-from source.NHANES.process_data import TARGET_PATH
+from process_data import TARGET_PATH , INTAKE_MAP
 
 # 默认的缺失容许率
 DEFAULT_MISSING_TOLERANCE = 0.5
@@ -80,6 +80,167 @@ DATA_MAP = {
     '球蛋白（g/dL）':{'type': 'float'},
 }
 
+CATEGORY_MAP = [
+    {
+        'category': '基本信息',
+        'data_list': [
+            {
+                'data': '性别'
+            },
+            {
+                'data': '体重（kg）'
+            },
+            {
+                'data': '身高（cm）'
+            },
+            {
+                'data': 'BMI（kg/m²）'
+            },
+            {
+                'data': '是否从事体力劳动'
+            }
+        ]
+    },
+    {
+        'category': '疾病史',
+        'data_list': [
+            {
+                'data': '患病情况'
+            } ,
+            {
+                'data': '存在家族糖尿病史'
+            }
+        ]
+    },
+    {
+        'category': '生活规律',
+        'data_list': [
+            {
+                'data': '饮酒频率'
+            },
+            {
+                'data': '饮食是否充足'
+            },
+            {
+                'data': '饮食是否均衡'
+            },
+            {
+                'data': '起夜次数'
+            },
+            {
+                'data': '是否每周进行进行中等以上强度锻炼'
+            },
+            {
+                'data': '平均每天坐姿时长（分钟）'
+            },
+            {
+                'data': '工作日平均睡眠小时数'
+            },
+            {
+                'data': '打鼾频率'
+            }
+        ]
+    },
+    {
+        'category': '饮食习惯',
+        'data_list': [
+            {
+                'data': '每日食盐摄入程度'
+            },
+            {
+                'data': '每日热量摄入量（kcal）'
+            },
+            {
+                'data': '每日蛋白质摄入量（g）'
+            },
+            {
+                'data': '每日碳水摄入量（g）'
+            },
+            {
+                'data': '每日膳食纤维摄入量（g）'
+            },
+            {
+                'data': '每日脂肪摄入量（g）'
+            },
+            {
+                'data': '每日水摄入量（g）'
+            },
+        ]
+    },
+    {
+        'category': '体检数据',
+        'data_list': [
+            {
+                'data': '血压收缩压（mmHg）'
+            },
+            {
+                'data': '血压舒张压（mmHg）'
+            },
+            {
+                'data': '脉搏（次/分钟）'
+            },
+            {
+                'data': '脉搏是否规律'
+            }
+        ]
+    },
+    {
+        'category': '化验数据',
+        'data_list': [
+            {
+                'data': '胆固醇（mg/dL）'
+            },
+            {
+                'data': '葡萄糖（mg/dL）'
+            },
+            {
+                'data': '甘油三酯（mg/dL）'
+            },
+            {
+                'data': '肌酐（mg/dL）'
+            },
+            {
+                'data': '磷（mg/dL）'
+            },
+            {
+                'data': '钾（mmol/L）'
+            },
+            {
+                'data': '白蛋白（g/dL）'
+            },
+            {
+                'data': '血尿素氮（mg/dL）'
+            },
+            {
+                'data': '碳酸氢盐（mmol/L）'
+            },
+            {
+                'data': '钠（mmol/L）'
+            },
+            {
+                'data': '球蛋白（g/dL）'
+            },
+        ]
+    },
+    {
+        'category': '血检数据',
+        'data_list': [
+            {
+                'data': '白细胞计数（1000个细胞/uL）'
+            },
+            {
+                'data': '红细胞计数（10⁶ 个细胞/µL）'
+            },
+            {
+                'data': '血红蛋白（g/dL）'
+            },
+            {
+                'data': '血小板计数（1000 个细胞/µL）'
+            },
+        ]
+    }
+]
+
 DROP_LIST = ['SEQN']
 
 data_file = pandas.read_csv(DATA_PATH[:-1] + '.csv' , encoding = 'utf-8' , index_col = 'SEQN')
@@ -115,7 +276,7 @@ def clean_data():
         if column in data_file.columns:
             data_file.drop(column, axis=1, inplace=True)
 
-# 计算标准值
+# 计算标准
 def calculate_standards():
     count = len(data_file)
     for column in DATA_MAP:
@@ -190,5 +351,28 @@ def calculate_standards():
     data_file.to_csv(target_path , index=False , encoding='utf-8')
     print('> 数据清洗结果已存入文件 "' , str.split(target_path , '/')[-1] , sep = '')
 
-clean_data()
-calculate_standards()
+# 格式化分类表
+def categorize():
+    information_map = {}
+    for data_list in INTAKE_MAP:
+        for data_tuple in INTAKE_MAP[data_list]:
+            if len(data_tuple) == 5:
+                information_map[data_tuple[0]] = data_tuple[4]
+    for category in CATEGORY_MAP:
+        data_list = category['data_list']
+        for data in data_list:
+            name = data['data']
+            data['type'] = DATA_MAP[name]['type']
+            data['default'] = DATA_MAP[name]['default']
+            if 'necessary' in DATA_MAP[name]:
+                data['necessary'] = DATA_MAP[name]['necessary']
+            if name in information_map:
+                data['information'] = information_map[name]
+    target_path = TARGET_PATH[:-1] + '_category.json'
+    with open(target_path , 'w' , encoding = 'utf-8') as target_file:
+        json.dump(CATEGORY_MAP , target_file , ensure_ascii = False , indent = 4)
+
+if __name__ == '__main__':
+    clean_data()
+    calculate_standards()
+    categorize()
