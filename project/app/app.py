@@ -2,7 +2,7 @@ from flask import Flask,request,jsonify
 from pyexpat import features
 
 from project.config import HOST,PORT,DEBUG
-from business import convert_and_validate, build_feature_vector,do_prediction
+from business import convert_and_validate,do_prediction
 #from business import do_prediction_demo
 
 #请确保安装了flask_cors(如果需要)和flask
@@ -26,9 +26,8 @@ def predict():      #接收前端数据并返回预测结果
     except ValueError as e:
         # 通过接口返回错误信息
         return jsonify({'status': 'error', 'message': str(e)}), 400
-    features_data = build_feature_vector(converted_data)
 
-    result = do_prediction(features_data)    #进行预测(第一部分)
+    result = do_prediction(converted_data)    #进行预测(第一部分)
     return jsonify({'status':'success','result':result}),200    #返回预测结果
 
 @app.route('/health', methods=['GET'])    #健康检查接口
