@@ -265,7 +265,8 @@ def process() -> pandas.DataFrame:
                     result[process[0]] = columns.apply(lambda row: process[3](*row) , axis = 1)
     return result
 
-result = process()
-if os.path.exists(TARGET_PATH):
-    os.remove(TARGET_PATH)
-result.to_csv(TARGET_PATH , encoding = 'utf-8')
+if __name__ == '__main__':
+    result = process()
+    if os.path.exists(TARGET_PATH):
+        os.remove(TARGET_PATH)
+    result.to_csv(TARGET_PATH , encoding = 'utf-8')
