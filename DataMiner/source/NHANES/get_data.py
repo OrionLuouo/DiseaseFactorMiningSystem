@@ -5,9 +5,6 @@ import pandas
 import requests
 from bs4 import BeautifulSoup, Tag, NavigableString
 
-# 所需数据的名称。
-DATA_NAMES = {'Demographics Data' , 'Dietary Data' , 'Examination Data' , 'Laboratory Data' , 'Questionnaire Data'}
-
 # 每类数据下所需表的映射关系
 SHEET_MAP = {
     'Demographics Data':['Demographic Variables and Sample Weights'],
@@ -61,7 +58,7 @@ def search_survey():
     for tag in tags:
         texts = tag.find_all(string = True , recursive = False)
         for text in texts:
-            if text in DATA_NAMES:
+            if text in SHEET_MAP:
                 get_data_list_of(tag, text)
 
 # 在数据页获取数据列表

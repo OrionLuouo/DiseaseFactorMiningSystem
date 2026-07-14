@@ -21,7 +21,7 @@ DATA_MAP = {
     '脉搏是否规律':{'type': 'bool'},
     '体重（kg）':{'type': 'float' , 'necessary': True},
     '身高（cm）':{'type': 'float' , 'necessary': True},
-    'BMI（kg/m²）':{'type': 'float' , 'necessary': True , 'function': (['体重（kg）' , '身高（cm）'] , lambda x , y: x / y / y * 10000)},
+    'BMI（kg/m²）':{'type': 'float'  , 'tolerance': 1.1 , 'necessary': True , 'function': (['体重（kg）' , '身高（cm）'] , lambda x , y: x / y / y * 10000)},
     '是否有过胸部疼痛':{'type': 'bool'},
     '是否在运动时胸痛':{'type': 'bool' , 'tolerance': -1},
     '疼痛能否在10分钟内缓解':{'type': 'bool' , 'tolerance': -1},

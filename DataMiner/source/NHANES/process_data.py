@@ -32,7 +32,7 @@ def append_disease(disease:str , bool_function = disease_check, true_signal:int 
                 return disease
             return current + ';' + disease
     return append
-    
+
 # 生成添加已患疾病的元组
 def disease(code:str, disease_name:str, true_signal:int = 1) -> tuple:
     return DISEASE_COLUMN , code , True , append_disease(disease_name, true_signal = true_signal)
@@ -217,7 +217,6 @@ INTAKE_MAP = {
     'Weight History':[],
     'Weight History - Youth':[],
 }
-
 
 def process() -> pandas.DataFrame:
     # 初始化结果集，选取任意一个表单作为索引来源，由于问卷覆盖的普遍性，该表单对结果集初始状态及后续数据处理影响不大。
