@@ -1,16 +1,19 @@
 import os.path
 
+import math
 import pandas
 
 from get_data import DATA_PATH , DATA_NAMES , SHEET_MAP
 
-# 布尔值检查，1 = True，2 = False，None = None
+TARGET_PATH = DATA_PATH[:-1] + '.csv'
+
+# 布尔值检查，1 = True，2 = False，else = None
 def bool_check(x:int):
-    if x is None:
-        return None
-    if x > 2:
-        return None
-    return x == 1
+    if x == 1:
+        return True
+    elif x == 2:
+        return False
+    return None
 
 # 检查患病信号，仅当为 1 时返回 True，其他情况返回 None
 def disease_check(signal):
@@ -20,12 +23,12 @@ def disease_check(signal):
 def append_disease(disease:str , bool_function = disease_check, true_signal:int = 1):
     if disease is None or len(disease) == 0:
         return lambda x , y: x
-    def append(current:str , signal:str):
+    def append(current , signal:str):
         signal = bool_function(signal)
         if signal is None or signal == False:
             return current
         else:
-            if current is None or not type(current) == str or len(current) == 0:
+            if not type(current) == str or len(current) == 0:
                 return disease
             return current + ';' + disease
     return append
@@ -65,7 +68,7 @@ INTAKE_MAP = {
     'Blood Pressure':[
         ('血压收缩压（mmHg）' , ['BPXSY1' , 'BPXSY2' , 'BPXSY3'] , False , lambda x , y , z: (x + y + z) / 3),
         ('血压舒张压（mmHg）' , ['BPXDI1' , 'BPXDI2' , 'BPXDI3'] , False , lambda x , y , z: (x + y + z) / 3),
-        ('脉搏（次/分钟）' , ['BPXCHR' , 'BPXPLS'] , False , lambda x , y: x if y is None else y),
+        ('脉搏（次/分钟）' , ['BPXCHR' , 'BPXPLS'] , False , lambda x , y: x if math.isnan(y) else y),
         ('脉搏是否规律' , ['BPXPULS'] , False , bool_check)
     ],
     'Blood Pressure & Cholesterol':[],
@@ -77,7 +80,7 @@ INTAKE_MAP = {
     'Cardiovascular Health':[
         # 心血管
         ('是否有过胸部疼痛' , 'CDQ001' , False , bool_check),
-        ('是否在运动时胸痛' , ['CDQ002' , 'CDQ003'] , False , lambda x , y: True if x == 1 or y == 1 else None if x is None and y is None else False),
+        ('是否在运动时胸痛' , ['CDQ002' , 'CDQ003'] , False , lambda x , y: True if x == 1 or y == 1 else None if math.isnan(x) and math.isnan(y) else False),
         ('疼痛能否在10分钟内缓解' , 'CDQ006' , False , bool_check),
         ('运动时是否气短' , 'CDQ010' , False , bool_check)
     ],
@@ -94,6 +97,9 @@ INTAKE_MAP = {
         # 常见病
         (DISEASE_COLUMN , 'HSQ500' , True , append_disease('感冒' , disease_check)),
         (DISEASE_COLUMN , 'HSQ510' , True , append_disease('肠胃炎' , disease_check))
+    ],
+    'Demographic Variables and Sample Weights':[
+        ('性别' , 'RIAGENDR' , False , lambda x: '男' if x == 1 else '女' if x == 2 else None)
     ],
     'Dermatology':[],
     'Diabetes':[
@@ -260,4 +266,6 @@ def process() -> pandas.DataFrame:
     return result
 
 result = process()
-result.to_csv(DATA_PATH[:-1] + ".csv" , encoding = 'utf-8')
+if os.path.exists(TARGET_PATH):
+    os.remove(TARGET_PATH)
+result.to_csv(TARGET_PATH , encoding = 'utf-8')
