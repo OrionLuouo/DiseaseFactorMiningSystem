@@ -185,10 +185,8 @@ def convert_and_validate(data):
     return True, converted, None
 '''
 def convert_and_validate(data:dict)->dict:
-    '''
-    转换并校验前端数据
-    根据 config 校验并填充缺失值
-    '''
+    # 转换并校验前端数据
+    # 根据 config 校验并填充缺失值
     type_map = {
         "int": int,
         "float": float,
@@ -198,6 +196,9 @@ def convert_and_validate(data:dict)->dict:
 
     result = {}
     for key, field_config in FEATURE_COLS_and_Default_VALUES.items():
+        if key == "患病情况":
+            result[key] = field_config.get("default", "")
+            continue
         value = data.get(key)
         min_value = field_config.get("min")  # 如果没有配置，返回 None
         max_value = field_config.get("max")  # 如果没有配置，返回 None
