@@ -6,10 +6,11 @@ import requests
 from bs4 import BeautifulSoup, Tag, NavigableString
 
 # 所需数据的名称。
-DATA_NAMES = {'Dietary Data' , 'Examination Data' , 'Laboratory Data' , 'Questionnaire Data'}
+DATA_NAMES = {'Demographics Data' , 'Dietary Data' , 'Examination Data' , 'Laboratory Data' , 'Questionnaire Data'}
 
 # 每类数据下所需表的映射关系
 SHEET_MAP = {
+    'Demographics Data':['Demographic Variables and Sample Weights'],
     'Dietary Data': ['Dietary Interview - Total Nutrient Intakes, First Day'],
     'Examination Data': ['Blood Pressure' , 'Body Measures' , 'Dual-Energy X-ray Absorptiometry - Whole Body' , 'Oral Health - Dentition' , 'Oral Health - Recommendation of Care'],
     'Laboratory Data': ['Cholesterol - Total' , 'Complete Blood Count with 5-Part Differential' , 'Glycohemoglobin' , 'High-Sensitivity C-Reactive Protein' , 'Insulin' , 'Iodine - Urine' , 'Metals - Urine' , 'Plasma Fasting Glucose' , 'Sex Steroid Hormone Panel - Serum (Surplus)' , 'Standard Biochemistry Profile'],
