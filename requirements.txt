@@ -1,0 +1,117 @@
+# 疾病预测系统 — Python 依赖清单 / Requirements
+# =================================================
+# 推荐 Python 版本: 3.10 / 3.11（已验证: Python 3.11.9）
+# 推荐安装方式 (PyCharm Terminal / PowerShell):
+#
+#     # ---- 1. 创建虚拟环境 ----
+#     py -3.11 -m venv venv
+#     .\venv\Scripts\Activate.ps1
+#
+#     # ---- 2. 升级 pip ----
+#     python -m pip install --upgrade pip
+#
+#     # ---- 3. 一键安装所有依赖 ----
+#     pip install -r requirements.txt
+#
+# 如果只想装某一个依赖,直接复制下面 "📦 单包安装指令" 里的命令即可。
+#
+# ⚠️ 注意: stage03_ML_train.py 的 _plot_results() 用到了 seaborn
+#    (set_style / set_palette),pip install -r requirements.txt 之前
+#    必须包含 seaborn,否则训练到绘图步骤会报 ModuleNotFoundError: No module named 'seaborn'
+
+# ============================================================
+# 📦 单包安装指令 (单独使用)  +  每个组件的作用
+# ============================================================
+#
+#   pip install "Flask>=3.0,<4.0"
+#       → 本项目作用: Web 后端框架,提供 REST API(/api/predict、/api/health)
+#                    + 渲染前端 HTML 页面,接收用户体检数据
+#
+#   pip install "numpy>=2.0,<3.0"
+#       → 本项目作用: 数值计算底层,XGBoost / scikit-learn 的矩阵运算都靠它
+#                    stage02 标准化、stage03 训练、stage04 推理都用到 ndarray
+#
+#   pip install "pandas>=2.0,<3.0"
+#       → 本项目作用: 加载和清洗 data/data_ill_final.csv 体检数据
+#                    stage01 用它读 CSV;stage02 用它做缺失值处理和特征对齐
+#
+#   pip install "scikit-learn>=1.3,<1.6"
+#       → 本项目作用: 提供 Classifier Chain(多标签分类链)
+#                    + train_test_split / 交叉验证 + 评估指标(F1/AUC)
+#                    stage03_ML_train 用它把 XGBoost 串成链式多输出模型
+#
+#   pip install "xgboost>=2.0,<3.0"
+#       → 本项目作用: 每条分类链里的基学习器(梯度提升树),负责预测单一疾病
+#                    是模型精度的核心;stage04_predict 推理时也用它
+#
+#   pip install "joblib>=1.3,<2.0"
+#       → 本项目作用: 把训练好的 XGBoostChain 序列化到 .joblib 文件
+#                    stage03 写出模型、stage04_predict + ml/pipeline.py load 读取模型
+#
+#   pip install "matplotlib>=3.7,<4.0"
+#       → 本项目作用: stage03 训练时画出 "per-label 指标柱状图" 和 "PR 曲线"
+#                    输出到 data/intermediate/stage03_*.png
+#
+#   pip install "seaborn>=0.13,<1.0"
+#       → 本项目作用: stage03_ML_train.py:657 _plot_results() 里
+#                    sns.set_style("whitegrid") + sns.set_palette("husl")
+#                    提供更美观的绘图样式(纯样式美化,可被 matplotlib 内置样式替代)
+#                    ⚠️ 不装这里,训练到 _plot_results() 会 ModuleNotFoundError
+#
+#   pip install "requests>=2.31"
+#       → 本项目作用: 演示 / 测试用,本地调用本系统 /api/predict 接口做联调
+#                    (不参与模型训练,纯辅助)
+#
+#   pip install "tqdm>=4.66"
+#       → 本项目作用: 训练日志进度条,stage03_ML_train 训练时显示每条链的进度
+#                    (不参与模型计算,纯体验优化)
+#
+# 一行版 (PowerShell / CMD 均可,逐条复制即可):
+#
+#   pip install "Flask>=3.0,<4.0" ^
+#               "numpy>=2.0,<3.0" ^
+#               "pandas>=2.0,<3.0" ^
+#               "scikit-learn>=1.3,<1.6" ^
+#               "xgboost>=2.0,<3.0" ^
+#               "joblib>=1.3,<2.0" ^
+#               "matplotlib>=3.7,<4.0" ^
+#               "seaborn>=0.13,<1.0" ^
+#               "requests>=2.31" ^
+#               "tqdm>=4.66"
+
+# ============================================================
+# ✅ 已验证可跑通 (Python 3.11.9 + Windows)
+# ============================================================
+#   flask      3.1.3
+#   numpy      2.4.6
+#   pandas     3.0.4
+#   sklearn    1.9.0
+#   xgboost    3.2.0
+#   joblib     1.5.3
+#   matplotlib 3.11.0
+#   seaborn    0.13.x  (任选 >=0.13 即可,推荐 0.13.2)
+# ============================================================
+
+# ===== Web 框架 =====
+Flask>=3.0,<4.0           # Web 后端:REST API + 渲染前端 HTML,接收体检数据
+
+# ===== 数值计算 =====
+numpy>=2.0,<3.0           # 矩阵/向量运算,ML 模型和张量操作都依赖
+
+# ===== 数据表格 =====
+pandas>=2.0,<3.0          # 读取清洗 data_ill_final.csv,处理表格型体检数据
+
+# ===== 机器学习 =====
+scikit-learn>=1.3,<1.6    # Classifier Chain 多标签分类 + 数据划分 + 评估指标
+xgboost>=2.0,<3.0         # 每条分类链的基学习器(梯度提升树),核心预测模型
+
+# ===== 模型持久化 =====
+joblib>=1.3,<2.0          # 序列化/反序列化训练好的 XGBoostChain 模型
+
+# ===== 训练过程可视化 =====
+matplotlib>=3.7,<4.0      # 画出 per-label 指标柱状图、PR 曲线(stage03 输出)
+seaborn>=0.13,<1.0        # _plot_results() 用 set_style/set_palette 美化样式
+
+# ===== 工具 =====
+requests>=2.31            # 演示 / 测试:本地调用 /api/predict 做接口联调
+tqdm>=4.66                # 训练时显示进度条,纯体验优化

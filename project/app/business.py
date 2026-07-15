@@ -1,5 +1,7 @@
-from project.config import FEATURE_COLS,DEFAULT_VALUES
+from project.config import FEATURE_COLS_and_Default_VALUES
 
+#此代码无用
+'''
 def convert_and_validate(data):
     """
     转换并校验前端数据
@@ -12,84 +14,85 @@ def convert_and_validate(data):
     try:
         age = float(data.get('age', 0))
     except (TypeError, ValueError):
-        return False, None, "❌ 年龄（age）格式错误，请输入数字"
+        return False, None, "年龄（age）格式错误，请输入数字"
 
     try:
         gender = int(data.get('gender', 0))
     except (TypeError, ValueError):
-        return False, None, "❌ 性别（gender）格式错误，请输入 0（女）或 1（男）"
+        return False, None, "性别（gender）格式错误，请输入 0（女）或 1（男）"
 
     try:
         systolic_bp = float(data.get('systolic_bp', 0))
     except (TypeError, ValueError):
-        return False, None, "❌ 收缩压（systolic_bp）格式错误，请输入数字"
+        return False, None, "收缩压（systolic_bp）格式错误，请输入数字"
 
     try:
         diastolic_bp = float(data.get('diastolic_bp', 0))
     except (TypeError, ValueError):
-        return False, None, "❌ 舒张压（diastolic_bp）格式错误，请输入数字"
+        return False, None, "舒张压（diastolic_bp）格式错误，请输入数字"
 
     try:
         fasting_glucose = float(data.get('fasting_glucose', 0))
     except (TypeError, ValueError):
-        return False, None, "❌ 空腹血糖（fasting_glucose）格式错误，请输入数字"
+        return False, None, "空腹血糖（fasting_glucose）格式错误，请输入数字"
+    try:
+        height = float(data.get('height',0))
+    except (TypeError, ValueError):
+        return False, None, "身高（height）格式错误，请输入数字"
+
+    try:
+        weight = float(data.get('weight',0))
+    except (TypeError, ValueError):
+        return False, None, "体重（weight）格式错误，请输入数字"
+
+    try:
+        heart_rate = float(data.get('heart_rate',0))
+    except (TypeError, ValueError):
+        return False, None, "心率（heart_rate）格式错误，请输入数字"
 
     # 非必填字段，如果没有则取默认值
-    try:
-        height = float(data.get('height')) if data.get('height') is not None else 165.0
-    except (TypeError, ValueError):
-        return False, None, "❌ 身高（height）格式错误，请输入数字"
 
-    try:
-        weight = float(data.get('weight')) if data.get('weight') is not None else 65.0
-    except (TypeError, ValueError):
-        return False, None, "❌ 体重（weight）格式错误，请输入数字"
-
-    try:
-        heart_rate = float(data.get('heart_rate')) if data.get('heart_rate') is not None else 75.0
-    except (TypeError, ValueError):
-        return False, None, "❌ 心率（heart_rate）格式错误，请输入数字"
 
     try:
         total_cholesterol = float(data.get('total_cholesterol')) if data.get(
             'total_cholesterol') is not None else 4.5
     except (TypeError, ValueError):
-        return False, None, "❌ 总胆固醇（total_cholesterol）格式错误，请输入数字"
+        return False, None, "总胆固醇（total_cholesterol）格式错误，请输入数字"
 
     try:
         hdl_cholesterol = float(data.get('hdl_cholesterol')) if data.get('hdl_cholesterol') is not None else 1.3
     except (TypeError, ValueError):
-        return False, None, "❌ HDL胆固醇（hdl_cholesterol）格式错误，请输入数字"
+        return False, None, "HDL胆固醇（hdl_cholesterol）格式错误，请输入数字"
 
     try:
         ldl_cholesterol = float(data.get('ldl_cholesterol')) if data.get('ldl_cholesterol') is not None else 2.8
     except (TypeError, ValueError):
-        return False, None, "❌ LDL胆固醇（ldl_cholesterol）格式错误，请输入数字"
+        return False, None, "LDL胆固醇（ldl_cholesterol）格式错误，请输入数字"
 
     try:
         triglycerides = float(data.get('triglycerides')) if data.get('triglycerides') is not None else 1.5
     except (TypeError, ValueError):
-        return False, None, "❌ 甘油三酯（triglycerides）格式错误，请输入数字"
+        return False, None, "甘油三酯（triglycerides）格式错误，请输入数字"
 
     try:
         alt = float(data.get('alt')) if data.get('alt') is not None else 25.0
     except (TypeError, ValueError):
-        return False, None, "❌ ALT（alt）格式错误，请输入数字"
+        return False, None, "ALT（alt）格式错误，请输入数字"
 
     try:
         ast = float(data.get('ast')) if data.get('ast') is not None else 22.0
     except (TypeError, ValueError):
-        return False, None, "❌ AST（ast）格式错误，请输入数字"
+        return False, None, "AST（ast）格式错误，请输入数字"
 
     try:
         creatinine = float(data.get('creatinine')) if data.get('creatinine') is not None else 80.0
     except (TypeError, ValueError):
-        return False, None, "❌ 肌酐（creatinine）格式错误，请输入数字"
+        return False, None, "肌酐（creatinine）格式错误，请输入数字"
 
     try:
         urea = float(data.get('urea')) if data.get('urea') is not None else 5.5
     except (TypeError, ValueError):
-        return False, None, "❌ 尿素（urea）格式错误，请输入数字"
+        return False, None, "尿素（urea）格式错误，请输入数字"
 
     #=================数据校验=================#
     ###必填字段：
@@ -180,22 +183,71 @@ def convert_and_validate(data):
     }       #转换并校验后的数据
 
     return True, converted, None
+'''
+def convert_and_validate(data:dict)->dict:
+    # 转换并校验前端数据
+    # 根据 config 校验并填充缺失值
+    type_map = {
+        "int": int,
+        "float": float,
+    "bool": lambda x: bool(x) if isinstance(x,bool) else str(x).lower() in ('true', '1', 'yes'),
+        "str": str
+    }
+
+    result = {}
+    for key, field_config in FEATURE_COLS_and_Default_VALUES.items():
+        if key == "患病情况":
+            result[key] = field_config.get("default", "")
+            continue
+        value = data.get(key)
+        min_value = field_config.get("min")  # 如果没有配置，返回 None
+        max_value = field_config.get("max")  # 如果没有配置，返回 None
+
+        if value is None or value == "":
+            # 如果字段是必要字段且缺失，报错
+            if field_config.get("necessary", False):
+                raise ValueError(f"必要字段 '{key}' 缺失")
+            # 否则使用默认值
+            value = field_config["default"]
+
+        try:            # 数据类型转换（char->int/float/bool）
+            converter = type_map.get(field_config["type"])
+            if converter:
+                value = converter(value)
+        except (ValueError, TypeError):
+            raise ValueError(f"字段 '{key}' 类型错误，期望 {field_config['type']}，\
+            实际 {type(value).__name__}")
 
 
-def build_feature_vector(data):
+            #检查各项值是否在可接受范围内
+        if min_value is not None and value < min_value:
+            raise ValueError(f"'{key}'值低于最低检测'{min_value}'")
+        if max_value is not None and value > max_value:
+            raise ValueError(f"'{key}'值高于最高检测'{max_value}'")
+
+        result[key] = value
+    height = result.get('身高（cm）')
+    weight = result.get('体重（kg）')
+    bmi = weight / ((height / 100) ** 2)
+    result['BMI（kg/m²）'] = round(bmi,2)
+    return result
+#仅在模型需要列表时使用，已废弃
+'''
+def build_feature_vector(data:dict)->list:
     features = []
-    for col in FEATURE_COLS:  # ← 使用config中定义的顺序
-        if col == 'bmi':
-            height = data.get('height', DEFAULT_VALUES.get('height', 165))
-            weight = data.get('weight', DEFAULT_VALUES.get('weight', 65))
+    for col, field_config in FEATURE_COLS_and_Default_VALUES.items():  # ← 使用config中定义的顺序
+        if col == "BMI（kg/m²）":
+            height = data.get('身高（cm）')
+            weight = data.get('体重（kg）')
             value = weight / ((height / 100) ** 2)
         else:
-            value = data.get(col, DEFAULT_VALUES.get(col, 0))
+            value = data.get(col, field_config.get('default', 0))
         features.append(float(value))
     return [features]
-
-
-def do_prediction(data):
+'''
+#此段代码仅作测试用
+'''
+def do_prediction_demo(data):
     """根据用户数据生成预测结果（模拟版）"""
     sbp = data.get('systolic_bp', 120)
     dbp = data.get('diastolic_bp', 80)
@@ -288,3 +340,10 @@ def do_prediction(data):
         "radar_data": radar_data,
         "recommendations": recommendations
     }
+'''
+def do_prediction(data:dict)->dict:
+    pass
+    '''
+    disease = function(data)
+    return disease
+    '''

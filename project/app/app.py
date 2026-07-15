@@ -1,7 +1,9 @@
 from flask import Flask,request,jsonify
+from pyexpat import features
 
 from project.config import HOST,PORT,DEBUG
-from business import convert_and_validate, do_prediction
+from business import convert_and_validate,do_prediction
+#from business import do_prediction_demo
 
 #请确保安装了flask_cors(如果需要)和flask
 
@@ -19,9 +21,11 @@ CORS(app)          #如果需要跨域支持，请取消注释
 def predict():      #接收前端数据并返回预测结果
     data = request.get_json()   #获取数据
 
-    is_valid,converted_data,err_msg = convert_and_validate(data)    #校验数据
-    if not is_valid:
-        return jsonify({'status':'error','message':err_msg}),400    #返回错误信息
+    try:
+        converted_data = convert_and_validate(data)  # ← 可能抛出异常
+    except ValueError as e:
+        # 通过接口返回错误信息
+        return jsonify({'status': 'error', 'message': str(e)}), 400
 
     result = do_prediction(converted_data)    #进行预测(第一部分)
     return jsonify({'status':'success','result':result}),200    #返回预测结果
