@@ -1,0 +1,146 @@
+{
+  "subset_accuracy": 0.6408,
+  "hamming_loss": 0.0272,
+  "f1_macro": 0.7347,
+  "f1_micro": 0.7053,
+  "precision_macro": 0.7653,
+  "recall_macro": 0.7232,
+  "auc_roc_macro": 0.9234,
+  "auc_pr_macro": 0.7664,
+  "label_ranking_ap": 0.912,
+  "per_label": {
+    "患病情况_高血压": {
+      "support": 124,
+      "f1": 0.9919,
+      "precision": 0.9919,
+      "recall": 0.9919,
+      "threshold": 0.05
+    },
+    "患病情况_低血压": {
+      "support": 125,
+      "f1": 0.9766,
+      "precision": 0.9542,
+      "recall": 1.0,
+      "threshold": 0.15
+    },
+    "患病情况_睡眠呼吸暂停": {
+      "support": 115,
+      "f1": 0.92,
+      "precision": 0.8519,
+      "recall": 1.0,
+      "threshold": 0.05
+    },
+    "患病情况_心律失常": {
+      "support": 121,
+      "f1": 0.916,
+      "precision": 0.8511,
+      "recall": 0.9917,
+      "threshold": 0.15
+    },
+    "患病情况_高尿酸血症": {
+      "support": 140,
+      "f1": 0.9018,
+      "precision": 0.9185,
+      "recall": 0.8857,
+      "threshold": 0.8
+    },
+    "患病情况_糖尿病": {
+      "support": 66,
+      "f1": 0.1346,
+      "precision": 0.1842,
+      "recall": 0.1061,
+      "threshold": 0.9
+    },
+    "患病情况_脂肪肝": {
+      "support": 96,
+      "f1": 0.8677,
+      "precision": 0.8817,
+      "recall": 0.8542,
+      "threshold": 0.1
+    },
+    "患病情况_NAFLD": {
+      "support": 124,
+      "f1": 0.8707,
+      "precision": 0.9352,
+      "recall": 0.8145,
+      "threshold": 0.95
+    },
+    "患病情况_痛风": {
+      "support": 97,
+      "f1": 0.8432,
+      "precision": 0.8864,
+      "recall": 0.8041,
+      "threshold": 0.55
+    },
+    "患病情况_骨质疏松": {
+      "support": 87,
+      "f1": 0.8439,
+      "precision": 0.8488,
+      "recall": 0.8391,
+      "threshold": 0.35
+    },
+    "患病情况_贫血": {
+      "support": 100,
+      "f1": 0.8559,
+      "precision": 0.7787,
+      "recall": 0.95,
+      "threshold": 0.3
+    },
+    "患病情况_感冒": {
+      "support": 177,
+      "f1": 0.0846,
+      "precision": 0.1325,
+      "recall": 0.0621,
+      "threshold": 0.75
+    },
+    "患病情况_肠胃炎": {
+      "support": 155,
+      "f1": 0.5827,
+      "precision": 0.7475,
+      "recall": 0.4774,
+      "threshold": 0.5
+    },
+    "患病情况_胆结石": {
+      "support": 148,
+      "f1": 0.7102,
+      "precision": 0.8969,
+      "recall": 0.5878,
+      "threshold": 0.8
+    },
+    "患病情况_肾结石": {
+      "support": 141,
+      "f1": 0.6937,
+      "precision": 0.9506,
+      "recall": 0.5461,
+      "threshold": 0.85
+    },
+    "患病情况_肾衰竭": {
+      "support": 111,
+      "f1": 0.875,
+      "precision": 0.9381,
+      "recall": 0.8198,
+      "threshold": 0.4
+    },
+    "患病情况_乙肝": {
+      "support": 86,
+      "f1": 0.8736,
+      "precision": 0.8636,
+      "recall": 0.8837,
+      "threshold": 0.2
+    },
+    "患病情况_丙肝": {
+      "support": 91,
+      "f1": 0.7961,
+      "precision": 0.713,
+      "recall": 0.9011,
+      "threshold": 0.95
+    },
+    "患病情况_蛀牙": {
+      "support": 288,
+      "f1": 0.2207,
+      "precision": 0.2159,
+      "recall": 0.2257,
+      "threshold": 0.65
+    }
+  }
+}
