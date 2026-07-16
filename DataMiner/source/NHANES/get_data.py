@@ -1,5 +1,6 @@
 import os
 from io import BytesIO
+from ssl import SSLError
 
 import pandas
 import requests
@@ -132,4 +133,7 @@ def run():
     search_survey()
 
 if __name__ == '__main__':
-    run()
+    try:
+        get_data.run()
+    except SSLError as ssl_error:
+        print("网络错误！无法从源网站采集数据。")

@@ -1,6 +1,6 @@
-from flask import Flask,request,jsonify
+from flask import Flask, request, jsonify, render_template
 from pyexpat import features
-
+import json,os
 from project.config import HOST,PORT,DEBUG
 from business import convert_and_validate,do_prediction
 #from business import do_prediction_demo
@@ -13,14 +13,11 @@ from flask_cors import CORS    #如果需要跨域支持，请取消注释
 app = Flask(__name__)
 CORS(app)          #如果需要跨域支持，请取消注释
 
-
-
-
 ################# API接口 ##################
 @app.route('/predict', methods=['POST'])    #预测接口
 def predict():      #接收前端数据并返回预测结果
     data = request.get_json()   #获取数据
-
+  
     try:
         converted_data = convert_and_validate(data)  # ← 可能抛出异常
     except ValueError as e:
@@ -36,32 +33,16 @@ def health_check():     #确认服务是否运行正常
 
 @app.route('/', methods=['GET'])
 def home():
-    return jsonify({
-        "service": "疾病预测系统",
-        "version": "TEST",
-        "endpoints": {
-            "predict": "/predict (POST)",
-            "health": "/health (GET)"
-        }
-    })
+    pass
 
-@app.route('/test', methods=['GET'])
-def test():
-    # 模拟一份假数据
-    test_data = {
-        "age": 45,
-        "gender": 1,
-        "systolic_bp": 135,
-        "diastolic_bp": 85,
-        "fasting_glucose": 5.8
-    }
-    # 直接调用你的核心预测函数
-    is_valid, err = convert_and_validate(test_data)
-    if is_valid:
-        result = do_prediction(test_data)
-        return jsonify({"status": "success", "result": result})
-    else:
-        return jsonify({"status": "error", "message": err})
+@app.route('/page_config', methods=['GET'])
+def page_config():
+    current_dir = os.path.dirname(os.path.dirname(os.path.dirname(__file__)))
+    json_path = os.path.join(current_dir,'DataMiner','data','NHANES','2017_category.json')
+
+    with open(json_path, 'r', encoding='utf-8') as f:
+        config = json.load(f)
+    return jsonify(config)
 
 if __name__ == '__main__':
     app.run(host=HOST, port=PORT, debug=DEBUG)
